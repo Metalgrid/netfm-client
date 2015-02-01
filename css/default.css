@@ -1,0 +1,39 @@
+.folder-tabs {
+    margin-left: 5px;
+    width: 95%;
+}
+
+.folder-view {
+    margin-top: -1px;
+}
+
+.folder {
+    display: inline-block;
+    width: 64px;
+    text-align: center;
+    text-decoration: none;
+    margin: 12px;
+    overflow: hidden;
+    word-wrap: break-word;
+    vertical-align: top;
+    border-radius: 5px;
+}
+
+.folder::before {
+    width: 64px;
+    height: 64px;
+    display: block;
+    content: " ";
+    background-image: url('../icons/folder.png');
+    background-size: cover;
+}
+
+.folder:hover {
+    cursor: pointer;
+}
+
+.folder.selected {
+    background-color: #0af;
+    color: #fff;
+    border: 1px solid #059;
+}
