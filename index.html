@@ -14,26 +14,28 @@
         <div class="container">
             <div class="row">
                 <ul class="breadcrumb">
-                    <li><a><i class="fa fa-home"></i></a></li>
-                    <li><a>Directory</a></li>
-                    <li><a>Sub-Directory</a></li>
+                    <li><a href="#"><i class="fa fa-home"></i></a></li>
+                    <li><a href="#">Directory</a></li>
+                    <li><a href="#">Sub-Directory</a></li>
                     <li class="active">Sub-Sub-Directory</li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-2">
-                    <nav class="navigation">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="active"><a>Home folder</a></li>
-                            <li><a>Web folder</a></li>
-                            <li><a>FTP folder</a></li>
-                        </ul>
-                    </nav>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="fa fa-bookmark"></i> Bookmarks <a class="pull-right"><i class="fa fa-toggle-down"></i></a></div>
+                        <div class="list-group collapse">
+                            <a href="#" class="list-group-item">Home</a>
+                            <a href="#" class="list-group-item active">Web</a>
+                            <a href="#" class="list-group-item">FTP</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-10">
                     <ul class="nav nav-tabs folder-tabs">
-                        <li class="active"><a><i class="fa fa-folder"></i> folder 1 <i class="fa fa-close"></i></a></li>
-                        <li><a><i class="fa fa-folder"></i> folder 2 <i class="fa fa-close"></i></a></li>
+                        <li class="active"><a href="#"><i class="fa fa-folder"></i> folder 1 <i class="fa fa-close"></i></a></li>
+                        <li><a href="#"><i class="fa fa-folder"></i> folder 2 <i class="fa fa-close"></i></a></li>
+                        <li><a href="#"><i class="fa fa-plus"></i></a></li>
                     </ul>
                     <div class="panel panel-default folder-view">
                         <div class="panel-body">
@@ -63,14 +65,80 @@
                             <a class="folder">folder 4</a>
                             <a class="folder">folder 4</a>
                         </div>
-                        <div class="panel-footer">This is the footer</div>
+                        <div class="panel-footer">Total: 24 folders</div>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="ctx-folder">
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Test 1</a></li>
+                <li><a href="#">Test 2</a></li>
+                <li><a href="#">Test 3</a></li>
+                <li><a href="#">Test 4</a></li>
+                <li><a href="#">Test 5</a></li>
+                <li><a href="#">Test 6</a></li>
+                <li><a href="#">Test 7</a></li>
+            </ul>
+        </div>
+        <div id="ctx-view">
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#"><i class="fa fa-file"></i> New document</a></li>
+                <li><a href="#"><i class="fa fa-folder"></i> New directory</a></li>
+                <li class="divider"></li>
+                <li><a href="#"><i class="fa fa-refresh"></i> Refresh</a></li>
+                <li><a href="#"><i class="fa fa-sort-alpha-asc"></i> Order by name</a></li>
+                <li><a href="#"><i class="fa fa-sort-amount-asc"></i> Order by size</a></li>
+                <li><a href="#"><i class="fa fa-cogs"></i> Properties</a></li>
+                <li class="divider"></li>
+                <li><a href="#"><i class="fa fa-terminal"></i> Open terminal here</a></li>
+            </ul>
+        </div>
+        <div id="ctx-file">
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">File Test 1</a></li>
+                <li><a href="#">File Test 2</a></li>
+                <li><a href="#">File Test 3</a></li>
+                <li><a href="#">File Test 4</a></li>
+            </ul>
+        </div>
         <script src="js/libs/angular.min.js"></script>
         <script src="js/libs/jquery-1.11.2.min.js"></script>
         <script src="js/libs/bootstrap.min.js"></script>
+        <script src="js/plugins/bootstrap-contextmenu.js"></script>
         <script src="js/netfm/main.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                $(".folder").contextmenu({
+                    target: "#ctx-folder"
+                });
+                $(".folder-view").contextmenu({
+                    target: "#ctx-view",
+                    onItem: function(context, e) {
+                        if ($(e.target).text() == "New ") {
+                            if (!$(e.target).hasClass("expanded")) {
+                                $(e.target).parent()
+                                .after("<li class='divider'></li>")
+                                .after("<li><a><i class='fa fa-file'></i> Document</a></li>")
+                                .after("<li><a><i class='fa fa-folder'></i> Directory</a></li>");
+                            }  
+                            return false;
+                        }
+                    }
+                });
+                $(".file").contextmenu({
+                    target: "#ctx-file"
+                });
+
+                $('[id^=ctx-]')
+                .on('show.bs.context', function(e){
+                    $(this).find('.dropdown-menu').first().stop(true, true).slideDown(100);
+                })
+                .on('hide.bs.context', function(e){
+                    $(this).find('.dropdown-menu').first().stop(true, true).slideUp(100);
+                });
+
+            });
+        </script>
     </body>
 </html>
