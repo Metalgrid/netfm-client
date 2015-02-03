@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="NetFM">
     <head>
         <title>NetFM - Advanced file manager in your web browser</title>
         <meta charset="utf-8">
@@ -9,33 +9,43 @@
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/default.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
+        <script src="js/libs/angular.min.js"></script>
+        <script src="js/netfm/main.js"></script>
     </head>
     <body class="well">
         <div class="container">
             <div class="row">
-                <ul class="breadcrumb">
+                <ul class="breadcrumb" ng-controller="BreadcrumbController as bcCtrl">
                     <li><a href="#"><i class="fa fa-home"></i></a></li>
-                    <li><a href="#">Directory</a></li>
-                    <li><a href="#">Sub-Directory</a></li>
-                    <li class="active">Sub-Sub-Directory</li>
+                    <li ng-repeat="crumb in bcCtrl.path" ng-class="{'active': bcCtrl.cwd == crumb}" ><a ng-click="bcCtrl.chdir(crumb)">{{crumb}}</a></li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><i class="fa fa-bookmark"></i> Bookmarks <a class="pull-right"><i class="fa fa-toggle-down"></i></a></div>
-                        <div class="list-group collapse">
-                            <a href="#" class="list-group-item">Home</a>
-                            <a href="#" class="list-group-item active">Web</a>
-                            <a href="#" class="list-group-item">FTP</a>
+                    <div class="panel panel-default" ng-controller="BookmarkController as bmCtrl">
+                        <div class="panel-heading">
+                            <i class="fa fa-bookmark"></i> Bookmarks 
+                            <a class="pull-right" ng-click="bmCtrl.toggle()">
+                                <i class="fa" ng-class="bmCtrl.toggled ? 'fa-toggle-down' : 'fa-toggle-up'"></i>
+                            </a>
+                        </div>
+                        <div class="list-group" ng-class="{'collapse': bmCtrl.toggled}">
+                            <a href="javascript:;" class="list-group-item" ng-repeat="bm in bmCtrl.bookmarks">{{bm}}</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <ul class="nav nav-tabs folder-tabs">
-                        <li class="active"><a href="#"><i class="fa fa-folder"></i> folder 1 <i class="fa fa-close"></i></a></li>
-                        <li><a href="#"><i class="fa fa-folder"></i> folder 2 <i class="fa fa-close"></i></a></li>
-                        <li><a href="#"><i class="fa fa-plus"></i></a></li>
+                    <ul class="nav nav-tabs folder-tabs" ng-controller="ViewController as viewCtrl">
+                        <li ng-repeat="tab in viewCtrl.tabs" ng-class="{'active': tab == viewCtrl.currentTab}" ng-click="viewCtrl.setTab(tab)">
+                            <a href="#">
+                                <i class="fa fa-folder"></i> {{tab.basename()}} <i class="fa fa-close" ng-if="viewCtrl.tabs.length > 1" ng-click="viewCtrl.closeTab(tab.basename())"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" ng-click="viewCtrl.addTab()">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </li>
                     </ul>
                     <div class="panel panel-default folder-view">
                         <div class="panel-body">
@@ -102,11 +112,9 @@
                 <li><a href="#">File Test 4</a></li>
             </ul>
         </div>
-        <script src="js/libs/angular.min.js"></script>
         <script src="js/libs/jquery-1.11.2.min.js"></script>
         <script src="js/libs/bootstrap.min.js"></script>
         <script src="js/plugins/bootstrap-contextmenu.js"></script>
-        <script src="js/netfm/main.js"></script>
         <script type="text/javascript">
             $(function() {
                 $(".folder").contextmenu({
