@@ -13,11 +13,11 @@
         <script src="js/netfm/main.js"></script>
     </head>
     <body class="well">
-        <div class="container">
+        <div class="container" ng-controller="ViewController as viewCtrl">
             <div class="row">
-                <ul class="breadcrumb" ng-controller="BreadcrumbController as bcCtrl">
+                <ul class="breadcrumb">
                     <li><a href="#"><i class="fa fa-home"></i></a></li>
-                    <li ng-repeat="crumb in bcCtrl.path" ng-class="{'active': bcCtrl.cwd == crumb}" ><a ng-click="bcCtrl.chdir(crumb)">{{crumb}}</a></li>
+                    <li ng-repeat="crumb in viewCtrl.currentTab.breadcrumb track by $index" ><a>{{crumb}}</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -35,10 +35,10 @@
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <ul class="nav nav-tabs folder-tabs" ng-controller="ViewController as viewCtrl">
+                    <ul class="nav nav-tabs folder-tabs">
                         <li ng-repeat="tab in viewCtrl.tabs" ng-class="{'active': tab == viewCtrl.currentTab}" ng-click="viewCtrl.setTab(tab)">
                             <a href="#">
-                                <i class="fa fa-folder"></i> {{tab.basename()}} <i class="fa fa-close" ng-if="viewCtrl.tabs.length > 1" ng-click="viewCtrl.closeTab(tab.basename())"></i>
+                                <i class="fa fa-folder"></i> {{tab.basename()}} <i class="fa fa-close" ng-if="viewCtrl.tabs.length > 1" ng-click="viewCtrl.closeTab(tab)"></i>
                             </a>
                         </li>
                         <li>
@@ -49,33 +49,9 @@
                     </ul>
                     <div class="panel panel-default folder-view">
                         <div class="panel-body">
-                            <a class="folder">folder 1</a>
-                            <a class="folder">folder 2</a>
-                            <a class="folder">folder 3 turbo something</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4 asd asd as das as aasdasd</a>
-                            <a class="folder">folderasdqihhgbd2dctvfx xasdc</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
-                            <a class="folder">folder 4</a>
+                            <a ng-repeat="entry in viewCtrl.currentTab.content" class="{{entry.type}}">{{entry.name}}</a>
                         </div>
-                        <div class="panel-footer">Total: 24 folders</div>
+                        <div class="panel-footer">Total: {{viewCtrl.currentTab.content.length}}</div>
                     </div>
                 </div>
             </div>
